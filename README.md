@@ -72,26 +72,23 @@ the dominant costs of the system are:
 You must first install 
 [NSS/NSPR](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS)
 with NSPR version 4.13.1 (or newer?) and NSS version 3.35 (or newer?), 
-[SCons](http://scons.org/) version 3.0.1 (or newer?), and
 [msgpack-c](https://github.com/msgpack/msgpack-c) version 2.1.5 (or newer?).
 
 On Ubuntu Bionic (18.04LTS), you can install NSS and scons with:
 
-    $ sudo apt install scons libnspr4-dev libnss3-dev 
+    $ sudo apt install libnspr4-dev libnss3-dev
+    $ export RUSTFLAGS="-lnss3"
 
 and you will have to download [msgpack-c 2.1.5 or newer here](https://github.com/msgpack/msgpack-c/releases),
 since the Ubuntu packages for msgpack are far out of date.
 
 For macOS using Homebrew:
 
-    $ brew install nss nspr scons msgpack
-
-    $ export LINKFLAGS="-L/usr/local/opt/nss/lib"
-    $ export CPPFLAGS="-I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr"
+    $ export RUSTFLAGS="-lnss3 -L/usr/local/opt/nss/lib"
 
 To compile the code, run:
 
-    $ scons
+    $ cargo build
 
 To run the test suite, execute:
 

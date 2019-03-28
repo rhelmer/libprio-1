@@ -5,6 +5,9 @@
          non_upper_case_globals,
          unused_mut)]
 #![feature(extern_types, libc)]
+
+use crate::prio::encrypt;
+
 extern crate libc;
 extern "C" {
     pub type PK11SlotInfoStr;
@@ -272,7 +275,7 @@ pub union unnamed {
     pub fortezza: SECKEYFortezzaPublicKey,
     pub ec: SECKEYECPublicKey,
 }
-pub type SECKEYPublicKey = SECKEYPublicKeyStr;
+pub type SECKEYPublicKey = crate::prio::encrypt::SECKEYPublicKeyStr;
 /*
  * Copyright (c) 2018, Henry Corrigan-Gibbs
  *

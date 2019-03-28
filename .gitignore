@@ -52,3 +52,6 @@ config.log
 *.dat
 *.raw
 *.tiff
+
+/target
+**/*.rs.bk

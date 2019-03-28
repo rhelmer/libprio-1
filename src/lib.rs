@@ -1,6 +1,5 @@
 #![feature(extern_types)]
 
-mod mpi;
 mod prio;
 
 fn main() {

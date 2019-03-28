@@ -1,6 +1,6 @@
-mod client;
-mod config;
-mod encrypt;
+pub mod client;
+pub mod config;
+pub mod encrypt;
 mod mparray;
 mod poly;
 mod prg;
