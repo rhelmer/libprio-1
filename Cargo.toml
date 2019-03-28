@@ -1,0 +1,8 @@
+[package]
+name = "libprio"
+version = "0.1.0"
+authors = ["Robert Helmer <rhelmer@rhelmer.org>"]
+edition = "2018"
+
+[dependencies]
+libc = "0.2.50"

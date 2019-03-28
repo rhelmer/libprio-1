@@ -1,0 +1,152 @@
+[
+    {
+        "command": "clang -o build/mpi/montmulf.o -c -O2 -pedantic -Wall -Wno-unknown-pragmas -Wno-parentheses-equality -Wno-unused-variable -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/mpi/montmulf.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/mpi/montmulf.c"
+    },
+    {
+        "command": "clang -o build/mpi/mpi.o -c -O2 -pedantic -Wall -Wno-unknown-pragmas -Wno-parentheses-equality -Wno-unused-variable -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/mpi/mpi.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/mpi/mpi.c"
+    },
+    {
+        "command": "clang -o build/mpi/mplogic.o -c -O2 -pedantic -Wall -Wno-unknown-pragmas -Wno-parentheses-equality -Wno-unused-variable -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/mpi/mplogic.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/mpi/mplogic.c"
+    },
+    {
+        "command": "clang -o build/mpi/mpprime.o -c -O2 -pedantic -Wall -Wno-unknown-pragmas -Wno-parentheses-equality -Wno-unused-variable -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/mpi/mpprime.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/mpi/mpprime.c"
+    },
+    {
+        "command": "clang -o build/mpi/primes.o -c -O2 -pedantic -Wall -Wno-unknown-pragmas -Wno-parentheses-equality -Wno-unused-variable -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/mpi/primes.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/mpi/primes.c"
+    },
+    {
+        "command": "clang -o build/mpi/mp_gf2m.o -c -O2 -pedantic -Wall -Wno-unknown-pragmas -Wno-parentheses-equality -Wno-unused-variable -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/mpi/mp_gf2m.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/mpi/mp_gf2m.c"
+    },
+    {
+        "command": "clang -o build/mpi/mpmontg.o -c -O2 -pedantic -Wall -Wno-unknown-pragmas -Wno-parentheses-equality -Wno-unused-variable -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/mpi/mpmontg.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/mpi/mpmontg.c"
+    },
+    {
+        "command": "clang -o build/mpi/mulsqr.o -c -O2 -pedantic -Wall -Wno-unknown-pragmas -Wno-parentheses-equality -Wno-unused-variable -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/mpi/mulsqr.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/mpi/mulsqr.c"
+    },
+    {
+        "command": "clang -o build/pclient/main.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/pclient/main.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/pclient/main.c"
+    },
+    {
+        "command": "clang -o build/prio/client.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/client.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/client.c"
+    },
+    {
+        "command": "clang -o build/prio/config.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/config.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/config.c"
+    },
+    {
+        "command": "clang -o build/prio/encrypt.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/encrypt.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/encrypt.c"
+    },
+    {
+        "command": "clang -o build/prio/mparray.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/mparray.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/mparray.c"
+    },
+    {
+        "command": "clang -o build/prio/poly.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/poly.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/poly.c"
+    },
+    {
+        "command": "clang -o build/prio/rand.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/rand.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/rand.c"
+    },
+    {
+        "command": "clang -o build/prio/prg.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/prg.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/prg.c"
+    },
+    {
+        "command": "clang -o build/prio/server.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/server.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/server.c"
+    },
+    {
+        "command": "clang -o build/prio/serial.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/serial.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/serial.c"
+    },
+    {
+        "command": "clang -o build/prio/share.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/prio/share.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/prio/share.c"
+    },
+    {
+        "command": "clang -o build/ptest/client_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/client_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/client_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/encrypt_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/encrypt_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/encrypt_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/example_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/example_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/example_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/fft_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/fft_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/fft_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/mpi_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/mpi_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/mpi_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/mutest.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/mutest.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/mutest.c"
+    },
+    {
+        "command": "clang -o build/ptest/prg_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/prg_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/prg_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/rand_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/rand_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/rand_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/serial_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/serial_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/serial_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/server_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/server_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/server_test.c"
+    },
+    {
+        "command": "clang -o build/ptest/share_test.o -c -Wall -Werror -Wextra -O3 -std=c99 -Wvla -I/usr/include/nspr -I/usr/include/nss -Impi -DDO_PR_CLEANUP -DMP_IOFUNC -I/usr/local/opt/nss/include/nss -I/usr/local/opt/nspr/include/nspr -Iinclude -I. build/ptest/share_test.c",
+        "directory": "/Users/rhelmer/src/libprio",
+        "file": "build/ptest/share_test.c"
+    }
+]
