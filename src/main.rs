@@ -61,14 +61,14 @@ fn main() {
         sA = PrioServer_new(cfg, prio::client::PRIO_SERVER_A, skA, serverSecret.as_ptr());
         println!("{:?}", sA);
         sB = PrioServer_new(cfg, prio::client::PRIO_SERVER_B, skB, serverSecret.as_ptr());
-        println!("{:?}", sA);
+        println!("{:?}", sB);
 
         // Initialize empty verifier objects
         println!("Initializing verifier objects...");
         vA = PrioVerifier_new(sA);
         println!("{:?}", vA);
         vB = PrioVerifier_new(sB);
-        println!("{:?}", sB);
+        println!("{:?}", vB);
 
         // Initialize shares of final aggregate statistics
         println!("Initializing of final aggregate statistics...");
@@ -92,7 +92,7 @@ fn main() {
         let mut forServerA = 0u8 as *mut u8;
         let mut forServerB = 0u8 as *mut u8;
         let mut data_items = false;
-        let mut output = 0u64 as *mut u64;
+        let mut output = 0u64 as *mut libc::c_ulonglong;
 
         let ndata: i32 = PrioConfig_numDataFields(cfg);
 /*
@@ -190,6 +190,7 @@ fn main() {
         // Once Server A has tA and tB, it can learn the aggregate statistics
         // in the clear.
         println!("Final aggregate statistics in the clear...");
+        println!("{:?}, {:?}, {:?}, {:?}, {:?}", rv, cfg, output, tA, tB);
         rv = PrioTotalShare_final(cfg, output, tA, tB);
         println!("{:?}, {:?}, {:?}, {:?}, {:?}", rv, cfg, output, tA, tB);
 
