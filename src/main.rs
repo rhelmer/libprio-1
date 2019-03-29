@@ -2,8 +2,8 @@
 
 mod prio;
 
-use prio::client;
-use prio::config;
+use prio::client::{PrioPRGSeed_randomize};
+use prio::config::{Prio_init, PrioConfig_new, PrioConfig_numDataFields, PrioConfig_clear, Prio_clear};
 use prio::encrypt::{PrivateKey, PrivateKey_clear, PublicKey, PublicKey_clear};
 use prio::server::{
     PrioServer, PrioServer_aggregate, PrioServer_clear, PrioServer_new, PrioVerifier_set_data,
@@ -32,15 +32,23 @@ fn main() {
     let mut tB: PrioTotalShare = 0 as PrioTotalShare;
 
     unsafe {
-        prio::encrypt::Keypair_new(&mut skA, &mut pkA);;
-        prio::encrypt::Keypair_new(&mut skB, &mut pkB);
+        let mut rv = Prio_init();
+
+        rv = prio::encrypt::Keypair_new(&mut skA, &mut pkA);
+        println!("{:?}, {:?}, {:?}", rv, skA, pkA);
+
+        rv = prio::encrypt::Keypair_new(&mut skB, &mut pkB);
+        println!("{:?}, {:?}, {:?}", rv, skB, pkB);
 
         println!("Configuring...");
-        let cfg = prio::config::PrioConfig_new(0, pkA, pkB, &0, 0);
+        let cfg = PrioConfig_new(214i32, pkA, pkB, b"testbatch\x00" as *const u8 as
+                                       *const libc::c_char as
+                                       *mut libc::c_uchar, 9i32 as libc::c_uint);
+        println!("{:?}, {:?}", rv, cfg);
 
-        // let mut serverSecret: prio::client::PrioPRGSeed = [4_u8; 16];
-        // prio::client::PrioPRGSeed_randomize(&mut serverSecret);
-        let serverSecret: *const u8 = 0 as *const u8;
+        let mut serverSecret: prio::client::PrioPRGSeed = [4_u8; 16];
+        rv = PrioPRGSeed_randomize(&mut serverSecret);
+        println!("{:?}, {:?}", rv, serverSecret);
 
         // Initialize two server objects. The role of the servers need not
         // be symmetric. In a deployment, we envision that:
@@ -50,13 +58,17 @@ fn main() {
         //   * Server B only comes online when the two servers want to compute
         //     the final aggregate statistics.
         println!("Initializing server objects...");
-        sA = PrioServer_new(cfg, prio::client::PRIO_SERVER_A, skA, serverSecret);
-        sB = PrioServer_new(cfg, prio::client::PRIO_SERVER_B, skB, serverSecret);
+        sA = PrioServer_new(cfg, prio::client::PRIO_SERVER_A, skA, serverSecret.as_ptr());
+        println!("{:?}", sA);
+        sB = PrioServer_new(cfg, prio::client::PRIO_SERVER_B, skB, serverSecret.as_ptr());
+        println!("{:?}", sA);
 
         // Initialize empty verifier objects
         println!("Initializing verifier objects...");
         vA = PrioVerifier_new(sA);
+        println!("{:?}", vA);
         vB = PrioVerifier_new(sB);
+        println!("{:?}", sB);
 
         // Initialize shares of final aggregate statistics
         println!("Initializing of final aggregate statistics...");
@@ -82,7 +94,7 @@ fn main() {
         let mut data_items = false;
         let mut output = 0u64 as *mut u64;
 
-        let ndata: i32 = prio::config::PrioConfig_numDataFields(cfg);
+        let ndata: i32 = PrioConfig_numDataFields(cfg);
 /*
         data_items = calloc(ndata, sizeof(bool));
 
@@ -92,10 +104,13 @@ fn main() {
         }
 */
         // Read in the client data packets
+        println!("Read in client data packets...");
+
         let pA = prio::client::PrioPacketClient_new(cfg, prio::client::PRIO_SERVER_A);
         let pB = prio::client::PrioPacketClient_new(cfg, prio::client::PRIO_SERVER_B);
 
-        prio::client::PrioPacketClient_set_data(cfg, &data_items, pA, pB);
+        rv = prio::client::PrioPacketClient_set_data(cfg, &data_items, pA, pB);
+        println!("{:?}, {:?}, {:?}, {:?}", rv, data_items, pA, pB);
 
         // II. VALIDATION PROTOCOL. (at servers)
         //
@@ -114,30 +129,47 @@ fn main() {
         // from its peer.
 
         // Set up a Prio verifier object.
-        PrioVerifier_set_data(vA, forServerA, aLen);
-        PrioVerifier_set_data(vB, forServerB, bLen);
+        println!("Set up a Prio verifier object...");
+
+        rv = PrioVerifier_set_data(vA, forServerA, aLen);
+        println!("{:?}, {:?}, {:?}, {:?}", rv, vA, forServerA, aLen);
+
+        rv = PrioVerifier_set_data(vB, forServerB, bLen);
+        println!("{:?}, {:?}, {:?}, {:?}", rv, vA, forServerA, aLen);
 
         // Both servers produce a packet1. Server A sends p1A to Server B
         // and vice versa.
-        PrioPacketVerify1_set_data(p1A, vA);
-        PrioPacketVerify1_set_data(p1B, vB);
+        println!("Set data for verifying packet 1");
+        rv = PrioPacketVerify1_set_data(p1A, vA);
+        println!("{:?}, {:?}, {:?}", rv, p1A, vA);
+        rv = PrioPacketVerify1_set_data(p1B, vB);
+        println!("{:?}, {:?}, {:?}", rv, p1B, vB);
 
         // Both servers produce a packet2. Server A sends p2A to Server B
         // and vice versa.
-        PrioPacketVerify2_set_data(p2A, vA, p1A, p1B);
-        PrioPacketVerify2_set_data(p2B, vB, p1A, p1B);
+        println!("Set data for verifying packet 2");
+        rv = PrioPacketVerify2_set_data(p2A, vA, p1A, p1B);
+        println!("{:?}, {:?}, {:?}, {:?}, {:?}", rv, p2A, vA, p1A, p1B);
+        rv = PrioPacketVerify2_set_data(p2B, vB, p1A, p1B);
+        println!("{:?}, {:?}, {:?}, {:?}, {:?}", rv, p2A, vA, p1A, p1B);
 
         // Using p2A and p2B, the servers can determine whether the request
         // is valid. (In fact, only Server A needs to perform this
         // check, since Server A can just tell Server B whether the check
         // succeeded or failed.)
-        PrioVerifier_isValid(vA, p2A, p2B);
-        PrioVerifier_isValid(vB, p2A, p2B);
+        println!("Determine if request is valid...");
+        rv = PrioVerifier_isValid(vA, p2A, p2B);
+        println!("{:?}, {:?}, {:?}, {:?}", rv, vA, p2A, p2B);
+        rv = PrioVerifier_isValid(vB, p2A, p2B);
+        println!("{:?}, {:?}, {:?}, {:?}", rv, vB, p2A, p2B);
 
         // If we get here, the client packet is valid, so add it to the aggregate
         // statistic counter for both servers.
-        PrioServer_aggregate(sA, vA);
-        PrioServer_aggregate(sB, vB);
+        println!("Determine if client packet is valid...");
+        rv = PrioServer_aggregate(sA, vA);
+        println!("{:?}, {:?}, {:?}", rv, sA, vA);
+        rv = PrioServer_aggregate(sB, vB);
+        println!("{:?}, {:?}, {:?}", rv, sB, vB);
 
         // The servers repeat the steps above for each client submission.
 
@@ -147,18 +179,27 @@ fn main() {
         // their shares of the aggregate statistics.
         //
         // Server B can send tB to Server A.
-        PrioTotalShare_set_data(tA, sA);
-        PrioTotalShare_set_data(tB, sB);
+        println!("Producte aggregate statistics...");
+
+        println!("Set total share data...");
+        rv = PrioTotalShare_set_data(tA, sA);
+        println!("{:?}, {:?}, {:?}", rv, tA, sA);
+        rv = PrioTotalShare_set_data(tB, sB);
+        println!("{:?}, {:?}, {:?}", rv, tB, sB);
 
         // Once Server A has tA and tB, it can learn the aggregate statistics
         // in the clear.
-        PrioTotalShare_final(cfg, output, tA, tB);
+        println!("Final aggregate statistics in the clear...");
+        rv = PrioTotalShare_final(cfg, output, tA, tB);
+        println!("{:?}, {:?}, {:?}, {:?}, {:?}", rv, cfg, output, tA, tB);
 
 /*
         for (int i = 0; i < ndata; i++) {
             ASSERT_TRUE(output[i] == dataItems[i]);
         }
 */
+
+        println!("Cleaning up...");
         PrioTotalShare_clear(tA);
         PrioTotalShare_clear(tB);
 
@@ -173,7 +214,7 @@ fn main() {
 
         PrioServer_clear(sA);
         PrioServer_clear(sB);
-        prio::config::PrioConfig_clear(cfg);
+        PrioConfig_clear(cfg);
 
         PublicKey_clear(pkA);
         PublicKey_clear(pkB);
@@ -181,7 +222,7 @@ fn main() {
         PrivateKey_clear(skA);
         PrivateKey_clear(skB);
 
-        prio::config::Prio_clear();
+        Prio_clear();
     }
 
     println!("Done.");
