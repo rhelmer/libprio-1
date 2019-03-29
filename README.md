@@ -1,4 +1,4 @@
-# libprio - A Prio library in C using NSS 
+# libprio - A Prio library in C using NSS
 
 **Warning:**
 We do our best to write bug-free code, but I have no doubt
@@ -77,14 +77,14 @@ with NSPR version 4.13.1 (or newer?) and NSS version 3.35 (or newer?),
 On Ubuntu Bionic (18.04LTS), you can install NSS and scons with:
 
     $ sudo apt install libnspr4-dev libnss3-dev
-    $ export RUSTFLAGS="-lnss3"
+    $ export RUSTFLAGS="-lnss3 -lmsgpackc -lmpi -lnspr4 -L${PWD}/build/mpi/"
 
 and you will have to download [msgpack-c 2.1.5 or newer here](https://github.com/msgpack/msgpack-c/releases),
 since the Ubuntu packages for msgpack are far out of date.
 
 For macOS using Homebrew:
 
-    $ export RUSTFLAGS="-lnss3 -L/usr/local/opt/nss/lib"
+    $ export RUSTFLAGS="-lnss3 -lmsgpackc -lmpi -lnspr4 -L/usr/local/opt/nss/lib -L${PWD}/build/mpi/"
 
 To compile the code, run:
 

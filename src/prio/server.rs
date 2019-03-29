@@ -6,6 +6,10 @@
          unused_mut)]
 #![feature(extern_types, libc)]
 extern crate libc;
+
+use crate::prio::config;
+use crate::prio::encrypt;
+
 extern "C" {
     pub type PK11SlotInfoStr;
     /*
@@ -18,28 +22,28 @@ extern "C" {
     pub type prg;
     /* Memory management       */
     #[no_mangle]
-    fn mp_init(mp: *mut mp_int) -> mp_err;
+    fn mp_init(mp: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_copy(from: *const mp_int, to: *mut mp_int) -> mp_err;
+    fn mp_copy(from: *const crate::prio::config::mp_int, to: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_clear(mp: *mut mp_int);
+    fn mp_clear(mp: *mut crate::prio::config::mp_int);
     #[no_mangle]
-    fn mp_set(mp: *mut mp_int, d: mp_digit);
+    fn mp_set(mp: *mut crate::prio::config::mp_int, d: mp_digit);
     #[no_mangle]
-    fn mp_sub_d(a: *const mp_int, d: mp_digit, b: *mut mp_int) -> mp_err;
+    fn mp_sub_d(a: *const crate::prio::config::mp_int, d: mp_digit, b: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_sub(a: *const mp_int, b: *const mp_int, c: *mut mp_int) -> mp_err;
+    fn mp_sub(a: *const crate::prio::config::mp_int, b: *const crate::prio::config::mp_int, c: *mut crate::prio::config::mp_int) -> mp_err;
     /* Modular arithmetic      */
     #[no_mangle]
-    fn mp_mod(a: *const mp_int, m: *const mp_int, c: *mut mp_int) -> mp_err;
+    fn mp_mod(a: *const crate::prio::config::mp_int, m: *const crate::prio::config::mp_int, c: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_addmod(a: *const mp_int, b: *const mp_int, m: *const mp_int,
-                 c: *mut mp_int) -> mp_err;
+    fn mp_addmod(a: *const crate::prio::config::mp_int, b: *const crate::prio::config::mp_int, m: *const crate::prio::config::mp_int,
+                 c: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_mulmod(a: *const mp_int, b: *const mp_int, m: *const mp_int,
-                 c: *mut mp_int) -> mp_err;
+    fn mp_mulmod(a: *const crate::prio::config::mp_int, b: *const crate::prio::config::mp_int, m: *const crate::prio::config::mp_int,
+                 c: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_cmp_d(a: *const mp_int, d: mp_digit) -> libc::c_int;
+    fn mp_cmp_d(a: *const crate::prio::config::mp_int, d: mp_digit) -> libc::c_int;
     #[no_mangle]
     fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
     #[no_mangle]
@@ -54,7 +58,7 @@ extern "C" {
     #[no_mangle]
     fn PRG_new(key: *const libc::c_uchar) -> PRG;
     /*
- * Initialize an array of `mp_int`s of the given length.
+ * Initialize an array of `crate::prio::config::mp_int`s of the given length.
  */
     #[no_mangle]
     fn MPArray_new(len: libc::c_int) -> MPArray;
@@ -71,22 +75,22 @@ extern "C" {
  * at the point `eval_at`. Return the result as `value`.
  */
     #[no_mangle]
-    fn poly_interp_evaluate(value: *mut mp_int, poly_points: const_MPArray,
-                            eval_at: *const mp_int, cfg: const_PrioConfig)
+    fn poly_interp_evaluate(value: *mut crate::prio::config::mp_int, poly_points: const_MPArray,
+                            eval_at: *const crate::prio::config::mp_int, cfg: const_PrioConfig)
      -> SECStatus;
     /*
  * Use the PRG output to sample a big integer x in the range
  *    lower <= x < max.
  */
     #[no_mangle]
-    fn PRG_get_int_range(prg: PRG, out: *mut mp_int, lower: *const mp_int,
-                         max: *const mp_int) -> SECStatus;
+    fn PRG_get_int_range(prg: PRG, out: *mut crate::prio::config::mp_int, lower: *const crate::prio::config::mp_int,
+                         max: *const crate::prio::config::mp_int) -> SECStatus;
     /*
  * Set each item in the array to a pseudorandom value in the range
  * [0, mod), where the values are generated using the PRG.
  */
     #[no_mangle]
-    fn PRG_get_array(prg: PRG, arr: MPArray, mod_0: *const mp_int)
+    fn PRG_get_array(prg: PRG, arr: MPArray, mod_0: *const crate::prio::config::mp_int)
      -> SECStatus;
     #[no_mangle]
     fn PrioPacketClient_decrypt(p: PrioPacketClient, cfg: const_PrioConfig,
@@ -98,7 +102,7 @@ extern "C" {
  */
     #[no_mangle]
     fn MPArray_addmod(dst: MPArray, to_add: const_MPArray,
-                      mod_0: *const mp_int) -> SECStatus;
+                      mod_0: *const crate::prio::config::mp_int) -> SECStatus;
     /*
  * Copies array from src to dst. Arrays must have the same length.
  */
@@ -141,7 +145,7 @@ pub type mp_digit = libc::c_ulong;
 ** MP_HALF_RADIX because it's the radix for MP_HALF_DIGITs, and it's
 ** consistent with the other _HALF_ names.
 */
-/* Macros for accessing the mp_int internals           */
+/* Macros for accessing the crate::prio::config::mp_int internals           */
 /* This defines the maximum I/O base (minimum is 2)   */
 #[derive ( Copy , Clone )]
 #[repr(C)]
@@ -427,7 +431,7 @@ pub struct SECKEYPrivateKeyStr {
     pub wincx: *mut libc::c_void,
     pub staticflags: PRUint32,
 }
-pub type SECKEYPrivateKey = SECKEYPrivateKeyStr;
+pub type SECKEYPrivateKey = crate::prio::encrypt::SECKEYPrivateKeyStr;
 /*
  * Copyright (c) 2018, Henry Corrigan-Gibbs
  *
@@ -460,13 +464,13 @@ pub struct prio_config {
     pub batch_id_len: libc::c_uint,
     pub server_a_pub: PublicKey,
     pub server_b_pub: PublicKey,
-    pub modulus: mp_int,
-    pub inv2: mp_int,
+    pub modulus: crate::prio::config::mp_int,
+    pub inv2: crate::prio::config::mp_int,
     pub n_roots: libc::c_int,
-    pub generator: mp_int,
+    pub generator: crate::prio::config::mp_int,
 }
 pub type PublicKey = *mut SECKEYPublicKey;
-pub type const_PrioConfig = *const prio_config;
+pub type const_PrioConfig = *const crate::prio::config::prio_config;
 #[derive ( Copy , Clone )]
 #[repr(C)]
 pub struct prio_server {
@@ -489,7 +493,7 @@ pub type MPArray = *mut mparray;
 #[repr(C)]
 pub struct mparray {
     pub len: libc::c_int,
-    pub data: *mut mp_int,
+    pub data: *mut crate::prio::config::mp_int,
 }
 pub type PrivateKey = *mut SECKEYPrivateKey;
 pub type PrioServer = *mut prio_server;
@@ -501,10 +505,10 @@ pub struct prio_verifier {
     pub clientp: PrioPacketClient,
     pub data_sharesB: MPArray,
     pub h_pointsB: MPArray,
-    pub share_fR: mp_int,
-    pub share_gR: mp_int,
-    pub share_hR: mp_int,
-    pub share_out: mp_int,
+    pub share_fR: crate::prio::config::mp_int,
+    pub share_gR: crate::prio::config::mp_int,
+    pub share_hR: crate::prio::config::mp_int,
+    pub share_out: crate::prio::config::mp_int,
 }
 /*
  * Copyright (c) 2018, Henry Corrigan-Gibbs
@@ -527,9 +531,9 @@ pub type PrioPacketClient = *mut prio_packet_client;
 #[repr(C)]
 pub struct prio_packet_client {
     pub triple: BeaverTriple,
-    pub f0_share: mp_int,
-    pub g0_share: mp_int,
-    pub h0_share: mp_int,
+    pub f0_share: crate::prio::config::mp_int,
+    pub g0_share: crate::prio::config::mp_int,
+    pub h0_share: crate::prio::config::mp_int,
     pub for_server: PrioServerId,
     pub shares: unnamed_0,
 }
@@ -561,24 +565,24 @@ pub type BeaverTriple = *mut beaver_triple;
 #[derive ( Copy , Clone )]
 #[repr(C)]
 pub struct beaver_triple {
-    pub a: mp_int,
-    pub b: mp_int,
-    pub c: mp_int,
+    pub a: crate::prio::config::mp_int,
+    pub b: crate::prio::config::mp_int,
+    pub c: crate::prio::config::mp_int,
 }
 pub type PrioVerifier = *mut prio_verifier;
 pub type const_PrioVerifier = *const prio_verifier;
 #[derive ( Copy , Clone )]
 #[repr(C)]
 pub struct prio_packet_verify1 {
-    pub share_d: mp_int,
-    pub share_e: mp_int,
+    pub share_d: crate::prio::config::mp_int,
+    pub share_e: crate::prio::config::mp_int,
 }
 pub type PrioPacketVerify1 = *mut prio_packet_verify1;
 pub type const_PrioPacketVerify1 = *const prio_packet_verify1;
 #[derive ( Copy , Clone )]
 #[repr(C)]
 pub struct prio_packet_verify2 {
-    pub share_out: mp_int,
+    pub share_out: crate::prio::config::mp_int,
 }
 pub type PrioPacketVerify2 = *mut prio_packet_verify2;
 pub type const_PrioPacketVerify2 = *const prio_packet_verify2;
@@ -812,10 +816,10 @@ unsafe extern "C" fn compute_shares(mut v: PrioVerifier,
     let mut rv: SECStatus = SECSuccess;
     let n: libc::c_int = (*(*(*v).s).cfg).num_data_fields + 1i32;
     let N: libc::c_int = next_power_of_two(n);
-    let mut eval_at: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
-    let mut lower: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut eval_at: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut lower: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
     eval_at.dp = 0 as *mut mp_digit;
     lower.dp = 0 as *mut mp_digit;
     let mut points_f: MPArray = 0 as MPArray;
@@ -871,7 +875,7 @@ unsafe extern "C" fn compute_shares(mut v: PrioVerifier,
                                     break ;
                                 }
                                 // [f](i) = i-th data share
-                                let mut data_i_minus_1: *const mp_int =
+                                let mut data_i_minus_1: *const crate::prio::config::mp_int =
                                     get_data_share(v as const_PrioVerifier,
                                                    i - 1i32);
                                 if mp_copy(data_i_minus_1,
@@ -935,7 +939,7 @@ unsafe extern "C" fn compute_shares(mut v: PrioVerifier,
                                         }
                                         let fresh0 = j;
                                         j = j + 1;
-                                        let mut h_point_j: *const mp_int =
+                                        let mut h_point_j: *const crate::prio::config::mp_int =
                                             get_h_share(v as
                                                             const_PrioVerifier,
                                                         fresh0);
@@ -1003,37 +1007,37 @@ unsafe extern "C" fn compute_shares(mut v: PrioVerifier,
     return rv;
 }
 unsafe extern "C" fn get_h_share(mut v: const_PrioVerifier,
-                                 mut i: libc::c_int) -> *mut mp_int {
+                                 mut i: libc::c_int) -> *mut crate::prio::config::mp_int {
     match (*(*v).s).idx as libc::c_uint {
         0 => {
             return &mut *(*(*(*v).clientp).shares.A.h_points).data.offset(i as
                                                                               isize)
-                       as *mut mp_int
+                       as *mut crate::prio::config::mp_int
         }
         1 => {
             return &mut *(*(*v).h_pointsB).data.offset(i as isize) as
-                       *mut mp_int
+                       *mut crate::prio::config::mp_int
         }
         _ => { }
     }
-    return 0 as *mut mp_int;
+    return 0 as *mut crate::prio::config::mp_int;
 }
 unsafe extern "C" fn get_data_share(mut v: const_PrioVerifier,
-                                    mut i: libc::c_int) -> *mut mp_int {
+                                    mut i: libc::c_int) -> *mut crate::prio::config::mp_int {
     match (*(*v).s).idx as libc::c_uint {
         0 => {
             return &mut *(*(*(*v).clientp).shares.A.data_shares).data.offset(i
                                                                                  as
                                                                                  isize)
-                       as *mut mp_int
+                       as *mut crate::prio::config::mp_int
         }
         1 => {
             return &mut *(*(*v).data_sharesB).data.offset(i as isize) as
-                       *mut mp_int
+                       *mut crate::prio::config::mp_int
         }
         _ => { }
     }
-    return 0 as *mut mp_int;
+    return 0 as *mut crate::prio::config::mp_int;
 }
 /*
  * Generate the first packet that servers need to exchange to verify the
@@ -1126,14 +1130,14 @@ pub unsafe extern "C" fn PrioPacketVerify2_set_data(mut p2: PrioPacketVerify2,
                                                     mut p1B:
                                                         const_PrioPacketVerify1)
  -> SECStatus {
-    let mut mod_0: *const mp_int = 0 as *const mp_int;
+    let mut mod_0: *const crate::prio::config::mp_int = 0 as *const crate::prio::config::mp_int;
     let mut rv: SECStatus = SECSuccess;
-    let mut d: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
-    let mut e: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
-    let mut tmp: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut d: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut e: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut tmp: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
     d.dp = 0 as *mut mp_digit;
     e.dp = 0 as *mut mp_digit;
     tmp.dp = 0 as *mut mp_digit;
@@ -1199,8 +1203,8 @@ pub unsafe extern "C" fn PrioVerifier_isValid(mut v: const_PrioVerifier,
                                               mut pB: const_PrioPacketVerify2)
  -> SECStatus {
     let mut rv: SECStatus = SECSuccess;
-    let mut res: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut res: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
     res.dp = 0 as *mut mp_digit;
     if mp_init(&mut res) != 0i32 {
         rv = SECFailure
@@ -1302,8 +1306,8 @@ pub unsafe extern "C" fn PrioTotalShare_final(mut cfg: const_PrioConfig,
         return SECFailure
     }
     let mut rv: SECStatus = SECSuccess;
-    let mut tmp: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut tmp: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
     tmp.dp = 0 as *mut mp_digit;
     if mp_init(&mut tmp) != 0i32 {
         rv = SECFailure

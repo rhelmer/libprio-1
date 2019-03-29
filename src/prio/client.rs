@@ -6,6 +6,10 @@
          unused_mut)]
 #![feature(extern_types, libc)]
 extern crate libc;
+
+use crate::prio::config;
+use crate::prio::encrypt;
+
 extern "C" {
     pub type msgpack_zone_chunk;
     pub type PK11SlotInfoStr;
@@ -19,21 +23,21 @@ extern "C" {
     pub type prg;
     /* Memory management       */
     #[no_mangle]
-    fn mp_init(mp: *mut mp_int) -> mp_err;
+    fn mp_init(mp: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_copy(from: *const mp_int, to: *mut mp_int) -> mp_err;
+    fn mp_copy(from: *const crate::prio::config::mp_int, to: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_clear(mp: *mut mp_int);
+    fn mp_clear(mp: *mut crate::prio::config::mp_int);
     #[no_mangle]
-    fn mp_sub_d(a: *const mp_int, d: mp_digit, b: *mut mp_int) -> mp_err;
+    fn mp_sub_d(a: *const crate::prio::config::mp_int, d: mp_digit, b: *mut crate::prio::config::mp_int) -> mp_err;
     /* Modular arithmetic      */
     #[no_mangle]
-    fn mp_mod(a: *const mp_int, m: *const mp_int, c: *mut mp_int) -> mp_err;
+    fn mp_mod(a: *const crate::prio::config::mp_int, m: *const crate::prio::config::mp_int, c: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_mulmod(a: *const mp_int, b: *const mp_int, m: *const mp_int,
-                 c: *mut mp_int) -> mp_err;
+    fn mp_mulmod(a: *const crate::prio::config::mp_int, b: *const crate::prio::config::mp_int, m: *const crate::prio::config::mp_int,
+                 c: *mut crate::prio::config::mp_int) -> mp_err;
     #[no_mangle]
-    fn mp_cmp(a: *const mp_int, b: *const mp_int) -> libc::c_int;
+    fn mp_cmp(a: *const crate::prio::config::mp_int, b: *const crate::prio::config::mp_int) -> libc::c_int;
     #[no_mangle]
     fn memcmp(_: *const libc::c_void, _: *const libc::c_void,
               _: libc::c_ulong) -> libc::c_int;
@@ -123,18 +127,18 @@ extern "C" {
     /*
  * Use secret sharing to split the int src into two shares.
  * Use PRG to generate the value `shareB`.
- * The mp_ints must be initialized.
+ * The crate::prio::config::mp_ints must be initialized.
  */
     #[no_mangle]
-    fn PRG_share_int(prg: PRG, shareA: *mut mp_int, src: *const mp_int,
+    fn PRG_share_int(prg: PRG, shareA: *mut crate::prio::config::mp_int, src: *const crate::prio::config::mp_int,
                      cfg: const_PrioConfig) -> SECStatus;
     /*
  * Use secret sharing to split the int src into two shares.
- * The mp_ints must be initialized.
+ * The crate::prio::config::mp_ints must be initialized.
  */
     #[no_mangle]
-    fn share_int(cfg: const_PrioConfig, src: *const mp_int,
-                 shareA: *mut mp_int, shareB: *mut mp_int) -> SECStatus;
+    fn share_int(cfg: const_PrioConfig, src: *const crate::prio::config::mp_int,
+                 shareA: *mut crate::prio::config::mp_int, shareB: *mut crate::prio::config::mp_int) -> SECStatus;
     /*
  * Copyright (c) 2018, Henry Corrigan-Gibbs
  *
@@ -163,9 +167,9 @@ extern "C" {
  * using the NSS random number generator.
  */
     #[no_mangle]
-    fn rand_int(out: *mut mp_int, max: *const mp_int) -> SECStatus;
+    fn rand_int(out: *mut crate::prio::config::mp_int, max: *const crate::prio::config::mp_int) -> SECStatus;
     /*
- * Initialize an array of `mp_int`s of the given length.
+ * Initialize an array of `crate::prio::config::mp_int`s of the given length.
  */
     #[no_mangle]
     fn MPArray_new(len: libc::c_int) -> MPArray;
@@ -201,7 +205,7 @@ extern "C" {
  * share.
  */
     #[no_mangle]
-    fn PrioPRGSeed_randomize(seed: *mut PrioPRGSeed) -> SECStatus;
+    pub fn PrioPRGSeed_randomize(seed: *mut PrioPRGSeed) -> SECStatus;
     #[no_mangle]
     fn PrioConfig_hPoints(cfg: const_PrioConfig) -> libc::c_int;
     /*
@@ -592,7 +596,7 @@ pub union unnamed {
     pub fortezza: SECKEYFortezzaPublicKey,
     pub ec: SECKEYECPublicKey,
 }
-pub type SECKEYPublicKey = SECKEYPublicKeyStr;
+pub type SECKEYPublicKey = crate::prio::encrypt::SECKEYPublicKeyStr;
 /* bit flag definitions for staticflags */
 /* bit 0 states \
                                         whether attributes are cached */
@@ -644,13 +648,13 @@ pub struct prio_config {
     pub batch_id_len: libc::c_uint,
     pub server_a_pub: PublicKey,
     pub server_b_pub: PublicKey,
-    pub modulus: mp_int,
-    pub inv2: mp_int,
+    pub modulus: crate::prio::config::mp_int,
+    pub inv2: crate::prio::config::mp_int,
     pub n_roots: libc::c_int,
-    pub generator: mp_int,
+    pub generator: crate::prio::config::mp_int,
 }
 pub type PublicKey = *mut SECKEYPublicKey;
-pub type const_PrioConfig = *const prio_config;
+pub type const_PrioConfig = *const crate::prio::config::prio_config;
 pub type PrivateKey = *mut SECKEYPrivateKey;
 /*
  * Copyright (c) 2018, Henry Corrigan-Gibbs
@@ -673,9 +677,9 @@ pub type PrioPacketClient = *mut prio_packet_client;
 #[repr(C)]
 pub struct prio_packet_client {
     pub triple: BeaverTriple,
-    pub f0_share: mp_int,
-    pub g0_share: mp_int,
-    pub h0_share: mp_int,
+    pub f0_share: crate::prio::config::mp_int,
+    pub g0_share: crate::prio::config::mp_int,
+    pub h0_share: crate::prio::config::mp_int,
     pub for_server: PrioServerId,
     pub shares: unnamed_0,
 }
@@ -708,7 +712,7 @@ pub type MPArray = *mut mparray;
 #[repr(C)]
 pub struct mparray {
     pub len: libc::c_int,
-    pub data: *mut mp_int,
+    pub data: *mut crate::prio::config::mp_int,
 }
 pub type BeaverTriple = *mut beaver_triple;
 /*
@@ -721,9 +725,9 @@ pub type BeaverTriple = *mut beaver_triple;
 #[derive ( Copy , Clone )]
 #[repr(C)]
 pub struct beaver_triple {
-    pub a: mp_int,
-    pub b: mp_int,
-    pub c: mp_int,
+    pub a: crate::prio::config::mp_int,
+    pub b: crate::prio::config::mp_int,
+    pub c: crate::prio::config::mp_int,
 }
 pub type const_PrioPacketClient = *const prio_packet_client;
 pub type PRG = *mut prg;
@@ -995,12 +999,12 @@ unsafe extern "C" fn share_polynomials(mut cfg: const_PrioConfig,
     let mut j: libc::c_int = 0;
     let mut current_block: u64;
     let mut rv: SECStatus = SECSuccess;
-    let mut mod_0: *const mp_int = &(*cfg).modulus;
+    let mut mod_0: *const crate::prio::config::mp_int = &(*cfg).modulus;
     let mut points_f: const_MPArray = data_in;
-    let mut f0: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
-    let mut g0: mp_int =
-        mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut f0: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
+    let mut g0: crate::prio::config::mp_int =
+        crate::prio::config::mp_int{sign: 0, alloc: 0, used: 0, dp: 0 as *mut mp_digit,};
     f0.dp = 0 as *mut mp_digit;
     g0.dp = 0 as *mut mp_digit;
     let mut points_g: MPArray = 0 as MPArray;
@@ -1170,11 +1174,11 @@ unsafe extern "C" fn share_polynomials(mut cfg: const_PrioConfig,
 unsafe extern "C" fn data_polynomial_evals(mut cfg: const_PrioConfig,
                                            mut data_in: const_MPArray,
                                            mut evals_out: MPArray,
-                                           mut const_term: *mut mp_int)
+                                           mut const_term: *mut crate::prio::config::mp_int)
  -> SECStatus {
     let mut current_block: u64;
     let mut rv: SECStatus = SECSuccess;
-    let mut mod_0: *const mp_int = &(*cfg).modulus;
+    let mut mod_0: *const crate::prio::config::mp_int = &(*cfg).modulus;
     let mut points_f: MPArray = 0 as MPArray;
     let mut poly_f: MPArray = 0 as MPArray;
     // Number of multiplication gates in the Valid() circuit.

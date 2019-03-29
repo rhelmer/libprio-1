@@ -6,5 +6,5 @@ mod poly;
 mod prg;
 mod rand;
 mod serial;
-mod server;
+pub mod server;
 mod share;
