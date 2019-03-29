@@ -53,7 +53,7 @@ fn main() {
         vB = prio::server::PrioVerifier_new(sB);
 
         // Initialize shares of final aggregate statistics
-        println!("Initializing shares objects...");
+        println!("Initializing of final aggregate statistics...");
         tA = prio::server::PrioTotalShare_new();
         tB = prio::server::PrioTotalShare_new();
 

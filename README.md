@@ -88,34 +88,20 @@ For macOS using Homebrew:
 
 To compile the code, run:
 
+    $ scons
     $ cargo build
 
 To run the test suite, execute:
 
-    $ build/ptest/ptest -v
+    $ cargo test
 
-To print debug messages while compiling:
+To compile without debug symbols, run:
 
-    $ scons VERBOSE=1
-
-To compile with debug symbols, run:
-
-    $ scons DEBUG=1
+    $ cargo build --release
 
 To clean up the object and binary files, run:
 
-    $ scons -c
-
-The files in this directory are:
-````
-/build      - Binaries, object files, etc.
-/include    - Exported header files
-              (Note: The public header is <mprio.h> since
-              NSPR already has a file called <prio.h>.)
-/mpi        - NSS MPI bignum library 
-/pclient    - Example code that uses the Prio library
-/prio       - Prio library core code
-/ptest      - Tests and test runner
+    $ scons -c && cargo clean
 ````
 
 ## Optimizations and features not yet implemented
@@ -131,5 +117,5 @@ The files in this directory are:
 * **Misc.**
   There are TODO notes scattered throughout code indicating
   places for potential performance optimizations.
-  
+
 
